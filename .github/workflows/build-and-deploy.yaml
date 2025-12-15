@@ -1,0 +1,28 @@
+name: Build and Deloy
+on:
+  push:
+    branches:
+      - main  
+  workflow_dispatch: # Allows manual triggering
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./astro-project-dir # All 'run' steps in this job start here
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22 # Or your preferred Node.js version
+          cache: 'npm' # Or 'yarn' or 'pnpm'
+      - name: Install dependencies
+        run: npm install # Or yarn install, pnpm install
+      - name: Build Astro project
+        run: npm run build 
+      - name: Show results of build
+        run: tree dist
