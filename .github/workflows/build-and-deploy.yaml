@@ -25,5 +25,12 @@ jobs:
         run: npm install # Or yarn install, pnpm install
       - name: Build Astro project
         run: npm run build 
-      - name: Show results of build
-        run: tree dist
+      - name: rsync deployments
+        uses: burnett01/rsync-deployments@v8
+        with:
+          switches: -avzr --delete
+          path: ./astro-project-dir/dist/
+          remote_path: ${{ secrets.REMOTE_PATH }} 
+          remote_host: ${{ secrets.REMOTE_HOST }} 
+          remote_user: ${{ secrets.REMOTE_USER }} 
+          remote_key: ${{ secrets.REMOTE_PRIVATE_KEY }}
